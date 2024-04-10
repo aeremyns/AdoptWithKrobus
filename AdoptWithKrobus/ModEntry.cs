@@ -1,4 +1,5 @@
 ﻿using System;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -17,7 +18,13 @@ namespace AdoptWithKrobus
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            var harmony = new Harmony(this.ModManifest.UniqueID);
+
+            // example patch, you'll need to edit this for your patch
+            harmony.Patch(
+               original: AccessTools.Method(typeof(NPC), nameof(NPC.canGetPregnant)),
+                   postfix: new HarmonyMethod(typeof(Patches.CanGetPregnantPatch), nameof(Patches.CanGetPregnantPatch.Postfix))
+                );
         }
 
 
@@ -27,14 +34,6 @@ namespace AdoptWithKrobus
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
-        {
-            // ignore if player hasn't loaded a save yet
-            if (!Context.IsWorldReady)
-                return;
 
-            // print button presses to the console window
-            this.Monitor.Log($"{Game1.player.Name} pressed {e.Button}.", LogLevel.Debug);
-        }
     }
 }
