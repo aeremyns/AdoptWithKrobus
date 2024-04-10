@@ -12,6 +12,7 @@ namespace AdoptWithKrobus.Patches
             NPC spouse = __instance;
             Farmer farmer = spouse.getSpouse();
             
+
             
             if (spouse is Horse || spouse.IsInvisible)
             {
@@ -39,11 +40,10 @@ namespace AdoptWithKrobus.Patches
                     {
                         __result = kids[0].Age > 2;
                     }
-                    __result = false;
+                    return;
                 }
                 __result = true;
             }
-           __result =  false;
         }
     }
 }

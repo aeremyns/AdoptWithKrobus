@@ -18,6 +18,8 @@ namespace AdoptWithKrobus
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            //helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+
             var harmony = new Harmony(this.ModManifest.UniqueID);
 
             // example patch, you'll need to edit this for your patch
@@ -27,6 +29,15 @@ namespace AdoptWithKrobus
                 );
         }
 
+        /*private void OnDayStarted(object? sender, DayStartedEventArgs e) 
+        {
+            IEnumerable<Farmer> farmers = Game1.getAllFarmers();
+            foreach (var farmer in farmers)
+            {
+                this.Monitor.Log($"{farmer.GetDaysMarried()}", LogLevel.Debug);
+
+            }
+        }*/
 
         /*********
         ** Private methods
